@@ -31,4 +31,17 @@ router.get("/details", async (req, res) => {
   }
 });
 
+router.get("/slug", async (req, res) => {
+  const slug = req.query.slug;
+  try {
+    const response = await axios.get(
+      `https://api.rawg.io/api/games/${slug}/game-series?key=${process.env.RAWG_KEY}`
+    );
+    res.status(200).json(response.data);
+    console.log(response.data);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 module.exports = router;
