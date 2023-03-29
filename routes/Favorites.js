@@ -15,10 +15,8 @@ router.post("/favorites", async (req, res) => {
 });
 
 router.put("/add-favorite", async (req, res) => {
-  // I SEND MY VALUES TO BACKEND
   const { favorite, token } = req.body;
   try {
-    // FIND USER IN DB
     const User = await Member.findOne({
       token: token,
     });
@@ -26,23 +24,19 @@ router.put("/add-favorite", async (req, res) => {
     // CHOOSE ARRAY IN MODEL
     const favoriteArray = User.favorites;
 
-    //ARRAY EMPTY ? I PUSH
     if (favoriteArray.length === 0) {
       User.favorites.push(favorite);
       User.save();
     } else {
-      //PUSHING FUNCTION
       const pushing = () => {
         User.favorites.push(favorite);
         User.save();
       };
-      // ID EXIST IN FAVORITE ARRAY?
       const isFound = favoriteArray.some((element) => {
         if (element.id === favorite.id) {
           return true;
         }
       });
-      // ID isFOUND ? NO PUSH!
       isFound ? null : pushing();
     }
   } catch (error) {
